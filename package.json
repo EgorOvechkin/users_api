@@ -1,0 +1,25 @@
+{
+  "name": "profile_api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EgorOvechkin/profile_api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EgorOvechkin/profile_api/issues"
+  },
+  "homepage": "https://github.com/EgorOvechkin/profile_api#readme",
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "mongodb": "^2.2.26",
+    "socket.io": "^1.7.3"
+  }
+}
