@@ -3,14 +3,49 @@
   <title>Test WS</title>
 </head>
 <body>
-  <script 
-    src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js">
+  </script>
   <script>
+    function createUser() {
+      socket.emit(
+        'add_profile',
+        {
+          firstName: 'Egor',
+          middleName: 'Michalovich',
+          lastName: 'Ovechkin',
+          password: '1234',
+          country: 'Russia'
+        }
+      )
+    }
+
+    function deleteUser(id) {
+      console.log(id)
+      socket.emit('delete_profile', id)
+    }
+
+    function getUser(id) {
+      console.log(id)
+      socket.emit('get_profile', id)
+    }
+
     const socket = io('http://localhost:8080')
-    socket.on('news', function (data) {
+    socket.on('response', data => {
       console.log(data)
-      socket.emit('my other event', { my: 'data' })
+      const res = document.getElementById("response")
+      res.innerHTML = JSON.stringify(data)
     })
   </script>
+  <button onclick="createUser()">Create user</button>
+  <button onclick="getUser(document.getElementById('profileId').value)">Get user</button>
+  <br />
+  <input id="profileId"/>
+  <button
+    onclick="deleteUser(document.getElementById('profileId').value)"
+  >
+    Delete user
+  </button>
+  <div id="response" />
 </body>
 </html>
