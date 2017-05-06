@@ -1,3 +1,5 @@
+const { saltHashPassword } = require('../helpers')
+
 async function create(collections, profile) {
   const defaultProfile = {
     firstName: 'UnknowFirstName',
@@ -13,6 +15,7 @@ async function create(collections, profile) {
     password,
     country
   } = Object.assign(defaultProfile, profile)
+  const passwordData = password ? saltHashPassword(password) : null
   try {
     const res = await collections.profiles.insertOne({
       name: {
@@ -20,11 +23,10 @@ async function create(collections, profile) {
         middleName,
         lastName
       },
-      password,
+      passwordData,
       country
     })
     if (res.result.ok === 1 && res.result.n === 1) {
-      // console.log(res)
       console.log(`Profile with id: ${res.insertedId} was created`)
       return {
         code: 200,

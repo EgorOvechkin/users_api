@@ -8,11 +8,16 @@ async function read(collections, profileId) {
     if (res === null) {
       throw new Error('Not found')
     }
-    console.log(`Profile was read: ${JSON.stringify(res)}`)
+    const {
+      _id,
+      name,
+      country
+    } = res
+    console.log(`Profile was read: ${JSON.stringify({ _id, name, country })}`)
     return {
       code: 200,
       message: 'OK',
-      data: res
+      data: { _id, name, country }
     }
   } catch (err) {
     console.log(new Error(err))
