@@ -7,6 +7,8 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js">
   </script>
   <script>
+    const socket = io('http://localhost:8080')
+
     function createUser() {
       socket.emit(
         'add_profile',
@@ -24,29 +26,29 @@
     function updateUser() {
       const update = {}
       if (getValue('firstname')) {
-        Object.assign(update, {firstName: getValue('firstname')})
+        Object.assign(update, { firstName: getValue('firstname') })
       }
       if (getValue('country')) {
-        Object.assign(update, {country: +getValue('country')})
+        Object.assign(update, { country: +getValue('country') })
       }
       if (getValue('middlename')) {
-        Object.assign(update, {middleName: getValue('middlename')})
+        Object.assign(update, { middleName: getValue('middlename') })
       }
       if (getValue('lastname')) {
-        Object.assign(update, {lastName: getValue('lastname')})
+        Object.assign(update, { lastName: getValue('lastname') })
       }
       if (getValue('newNickname')) {
-        Object.assign(update, {nickname: getValue('newNickname')})
+        Object.assign(update, { nickname: getValue('newNickname') })
       }
       if (getValue('newPassword')) {
-        Object.assign(update, {password: getValue('newPassword')})
+        Object.assign(update, { password: getValue('newPassword') })
       }
       socket.emit(
         'update_profile',
         {
           account: {
             nickname: getValue('nickname'),
-            password: getValue('password'),
+            password: getValue('password')
           },
           update
         }
@@ -77,13 +79,13 @@
       })
     }
 
-    const socket = io('http://localhost:8080')
     socket.on('response', data => {
       console.log(data)
-      const res = document.getElementById("response")
+      const res = document.getElementById('response')
       res.innerHTML = JSON.stringify(data)
     })
   </script>
+
   <div>
     <div>
       <ul>

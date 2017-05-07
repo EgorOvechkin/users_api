@@ -31,7 +31,7 @@ async function update(collections, account, update) {
       { $set: filterUpdateOptions(update) }
     )
     if (res.result.ok === 1 && res.result.nModified === 1 && res.result.n === 1) {
-      console.log(`Profile with id: was updated`)
+      console.log(`Profile with nickname: ${account.nickname} was updated`)
       return {
         code: 200,
         message: 'OK'

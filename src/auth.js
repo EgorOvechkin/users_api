@@ -1,5 +1,4 @@
 const ObjectId = require('mongodb').ObjectID
-const { read } = require('./profiles')
 const { genHashPassword } = require('./helpers')
 
 async function auth(collections, { nickname = '', password = '' }) {
