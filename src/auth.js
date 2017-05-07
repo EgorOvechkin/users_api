@@ -1,15 +1,30 @@
 const ObjectId = require('mongodb').ObjectID
+const { read } = require('./profiles')
+const { genHashPassword } = require('./helpers')
 
-async function update(collections, { nickname, password }) {
+async function auth(collections, { nickname, password }) {
+  let code = null
   try {
-
+    const profile = await collections.profiles.findOne({ nickname })
+    if (!profile) {
+      code = 404
+      throw new Error('Not found')
+    }
+    const { passwordHash, salt } = profile.passwordData
+    if (passwordHash == genHashPassword(password, salt).passwordHash) {
+      return {
+        code: 200,
+        message: 'OK'
+      }
+    }
+    throw new Error('Password is not correct')
   } catch (err) {
     console.log(new Error(err))
     return {
-      code: 500,
+      code: code || 500,
       message: err.message
     }
   }
 }
 
-module.exports = update
+module.exports = auth

@@ -11,12 +11,12 @@
       socket.emit(
         'add_profile',
         {
-          firstName: 'Egor',
-          middleName: 'Michalovich',
-          lastName: 'Ovechkin',
-          nickname: 'egamega1',
-          password: '1234',
-          country: 'Russia'
+          firstName: getValue('firstname'),
+          middleName: getValue('middlename'),
+          lastName: getValue('lastname'),
+          nickname: getValue('nickname'),
+          password: getValue('password'),
+          country: getValue('country')
         }
       )
     }
@@ -25,25 +25,35 @@
       socket.emit(
         'update_profile',
         {
-          id,
+          id: getValue('profileId'),
           update: {
-            firstName: 'Alex',
-            country: 'US',
-            field: 'value',
+            firstName: getValue('firstname'),
+            country: getValue('country'),
             passwordData: {}
           }
         }
       )
     }
 
+    function getValue(id) {
+      return document.getElementById(id).value
+    }
+
     function deleteUser(id) {
       console.log(id)
-      socket.emit('delete_profile', id)
+      socket.emit('delete_profile', getValue('profileId'))
     }
 
     function getUser(id) {
       console.log(id)
-      socket.emit('get_profile', { profileId: id })
+      socket.emit('get_profile', { profileId: getValue('profileId') })
+    }
+
+    function auth(nickname, password) {
+      socket.emit('auth', {
+        nickname: getValue('nickname'),
+        password: getValue('password')
+      })
     }
 
     const socket = io('http://localhost:8080')
@@ -53,16 +63,24 @@
       res.innerHTML = JSON.stringify(data)
     })
   </script>
-  <button onclick="createUser()">Create user</button>
-  <button onclick="updateUser(document.getElementById('profileId').value)">Update user</button>
-  <button onclick="getUser(document.getElementById('profileId').value)">Get user</button>
-  <br />
-  <input id="profileId"/>
-  <button
-    onclick="deleteUser(document.getElementById('profileId').value)"
-  >
-    Delete user
-  </button>
+  <div>
+    <input id="firstname" placeholder="Name" />
+    <input id="middlename" placeholder="Middle name" />
+    <input id="lastname" placeholder="Surname" />
+    <input id="nickname" placeholder="Nickname" />
+    <input id="country" placeholder="Country" />
+    <input id="password" type="password" placeholder="Password" />
+    <br />
+    <input id="profileId" placeholder="ID" />
+  </div>
+  <div>
+    <button onclick="createUser()">Create user</button>
+    <button onclick="updateUser()">Update user</button>
+    <button onclick="getUser()">Get user</button>
+    <br />
+    <button onclick="deleteUser()">Delete user</button>
+    <button onclick="auth()">Auth</button>
+  </div>
   <div id="response" />
 </body>
 </html>

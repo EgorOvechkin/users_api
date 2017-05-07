@@ -3,7 +3,6 @@ const ObjectId = require('mongodb').ObjectID
 async function read(collections, { profileId, nickname }) {
   let code = null
   try {
-    console.log(nickname)
     if (!profileId && !nickname) {
       throw new Error('no prfileID and nickname')
     }
@@ -17,9 +16,10 @@ async function read(collections, { profileId, nickname }) {
     const {
       _id,
       name,
-      country
+      country,
+      nickname
     } = res
-    console.log(`Profile was read: ${JSON.stringify({ _id, name, country })}`)
+    console.log(`Profile was read: ${JSON.stringify({ _id, name, country, nickname })}`)
     return {
       code: 200,
       message: 'OK',

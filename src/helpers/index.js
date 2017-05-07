@@ -19,5 +19,6 @@ function saltHashPassword(password) {
 }
 
 module.exports = {
+  genHashPassword,
   saltHashPassword
 }

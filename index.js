@@ -2,6 +2,7 @@ const io = require('socket.io')(8080)
 const MongoClient = require('mongodb').MongoClient
 const { host, name, port } = require('./config.js')
 const { create, remove, read, update } = require('./src/profiles/')
+const _auth = require('./src/auth.js')
 
 async function init() {
   try {
@@ -15,6 +16,7 @@ async function init() {
     const deleteProfile = remove.bind(null, collections)
     const getProfile = read.bind(null, collections)
     const updateProfile = update.bind(null, collections)
+    const auth = _auth.bind(null, collections)
     io.on('connection', socket => {
       console.log('connect')
       socket.on('add_profile', async function(data) {
@@ -31,6 +33,14 @@ async function init() {
       })
       socket.on('update_profile', async function({ id, update }) {
         const response = await updateProfile(id, update)
+        socket.emit('response', response)
+      })
+      socket.on('update_profile', async function({ id, update }) {
+        const response = await updateProfile(id, update)
+        socket.emit('response', response)
+      })
+      socket.on('auth', async function({ nickname, password }) {
+        const response = await auth({ nickname, password })
         socket.emit('response', response)
       })
     })
