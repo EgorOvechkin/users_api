@@ -16,12 +16,31 @@
           lastName: getValue('lastname'),
           nickname: getValue('nickname'),
           password: getValue('password'),
-          country: getValue('country')
+          country: +getValue('country')
         }
       )
     }
 
-    function updateUser(id) {
+    function updateUser() {
+      const update = {}
+      if (getValue('firstname')) {
+        Object.assign(update, {firstName: getValue('firstname')})
+      }
+      if (getValue('country')) {
+        Object.assign(update, {country: +getValue('country')})
+      }
+      if (getValue('middlename')) {
+        Object.assign(update, {middleName: getValue('middlename')})
+      }
+      if (getValue('lastname')) {
+        Object.assign(update, {lastName: getValue('lastname')})
+      }
+      if (getValue('newNickname')) {
+        Object.assign(update, {nickname: getValue('newNickname')})
+      }
+      if (getValue('newPassword')) {
+        Object.assign(update, {password: getValue('newPassword')})
+      }
       socket.emit(
         'update_profile',
         {
@@ -29,13 +48,7 @@
             nickname: getValue('nickname'),
             password: getValue('password'),
           },
-          update: {
-            firstName: getValue('firstname'),
-            country: getValue('country'),
-            nickname: getValue('newNickname'),
-            password: getValue('newPassword'),
-            passwordData: {}
-          }
+          update
         }
       )
     }
@@ -76,8 +89,12 @@
     <input id="middlename" placeholder="Middle name" />
     <input id="lastname" placeholder="Surname" />
     <input id="nickname" placeholder="Nickname" />
-    <input id="country" placeholder="Country" />
     <input id="password" type="password" placeholder="Password" />
+    <select id="country" placeholder="Country" />
+      <option value="1">Russia</option>
+      <option value="2">USA</option>
+      <option value="3">Australia</option>
+    </select>
     <br />
     <input id="profileId" placeholder="ID" />
     <br />

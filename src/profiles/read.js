@@ -1,6 +1,6 @@
 const ObjectId = require('mongodb').ObjectID
 
-async function read(collections, accountData/*{ profileId, nickname }*/) {
+async function read(collections, accountData) {
   let code = null
   try {
     const { profileId } = accountData
@@ -22,11 +22,18 @@ async function read(collections, accountData/*{ profileId, nickname }*/) {
       country,
       nickname
     } = res
-    console.log(`Profile was read: ${JSON.stringify({ _id, name, country, nickname })}`)
+    const countryRes = await collections.countries
+      .findOne({ id: country })
+    const countryName = countryRes ? countryRes.name : country
+    console.log(
+      `Profile was read: ${JSON.stringify(
+        { _id, name, country: countryName, nickname }
+      )}`
+    )
     return {
       code: 200,
       message: 'OK',
-      data: { _id, name, country }
+      data: { _id, name, country: countryName }
     }
   } catch (err) {
     console.log(new Error(err))

@@ -2,7 +2,7 @@ const io = require('socket.io')(8080)
 const MongoClient = require('mongodb').MongoClient
 const { host, name, port } = require('./config.js')
 const { create, remove, read, update } = require('./src/profiles/')
-const _auth = require('./src/auth.js')
+const auth = require('./src/auth.js')
 
 async function init() {
   try {
@@ -12,11 +12,22 @@ async function init() {
       countries: mongo.collection('Countries'),
       profiles: mongo.collection('Profiles')
     }
+    // For tests
+    if (await collections.countries.count() === 0) {
+      await collections.countries.insertMany(
+        [
+          {name: 'Russia', id: 1 },
+          {name: 'USA', id: 2 },
+          {name: 'Australia', id: 3 }
+        ]
+      )
+    }
+    //
     const createProfile = create.bind(null, collections)
     const deleteProfile = remove.bind(null, collections)
     const getProfile = read.bind(null, collections)
     const updateProfile = update.bind(null, collections)
-    const auth = _auth.bind(null, collections)
+    const checkAuth = auth.bind(null, collections)
     io.on('connection', socket => {
       console.log('connect')
       socket.on('add_profile', async function(data) {
@@ -36,7 +47,7 @@ async function init() {
         socket.emit('response', response)
       })
       socket.on('auth', async function({ nickname, password }) {
-        const response = await auth({ nickname, password })
+        const response = await checkAuth({ nickname, password })
         socket.emit('response', response)
       })
     })

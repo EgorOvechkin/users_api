@@ -18,6 +18,7 @@ function filterUpdateOptions(update) {
 
 async function update(collections, account, update) {
   try {
+    if (Object.keys(update).length === 0) throw new Error('Nothing to update')
     if (!account) throw new Error('Account is required')
     const authResult = await auth(collections, account)
     if (authResult.code !== 200) {
