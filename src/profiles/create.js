@@ -5,12 +5,14 @@ async function create(collections, profile) {
     firstName: 'UnknowFirstName',
     middleName: 'UnknowMiddleName',
     lastName: 'UnknowLastName',
+    nickName: 'nickname',
     password: '',
     country: null
   }
   const {
     firstName,
     middleName,
+    nickName,
     lastName,
     password,
     country
@@ -24,7 +26,8 @@ async function create(collections, profile) {
         lastName
       },
       passwordData,
-      country
+      country,
+      nickName
     })
     if (res.result.ok === 1 && res.result.n === 1) {
       console.log(`Profile with id: ${res.insertedId} was created`)

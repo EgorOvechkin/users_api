@@ -14,8 +14,24 @@
           firstName: 'Egor',
           middleName: 'Michalovich',
           lastName: 'Ovechkin',
+          nickName: 'egamega',
           password: '1234',
           country: 'Russia'
+        }
+      )
+    }
+
+    function updateUser(id) {
+      socket.emit(
+        'update_profile',
+        {
+          id,
+          update: {
+            firstName: 'Alex',
+            country: 'US',
+            field: 'value',
+            passwordData: {}
+          }
         }
       )
     }
@@ -38,6 +54,7 @@
     })
   </script>
   <button onclick="createUser()">Create user</button>
+  <button onclick="updateUser(document.getElementById('profileId').value)">Update user</button>
   <button onclick="getUser(document.getElementById('profileId').value)">Get user</button>
   <br />
   <input id="profileId"/>
