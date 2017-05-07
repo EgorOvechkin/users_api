@@ -51,7 +51,10 @@
 
     function getUser(id) {
       console.log(id)
-      socket.emit('get_profile', { profileId: getValue('profileId') })
+      socket.emit('get_profile', {
+        profileId: getValue('profileId'),
+        nickname: getValue('nickname')
+      })
     }
 
     function auth(nickname, password) {

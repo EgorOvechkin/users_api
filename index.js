@@ -23,8 +23,8 @@ async function init() {
         const response = await createProfile(data)
         socket.emit('response', response)
       })
-      socket.on('get_profile', async function(id) {
-        const response = await getProfile(id)
+      socket.on('get_profile', async function({ profileId, nickname }) {
+        const response = await getProfile({ profileId, nickname })
         socket.emit('response', response)
       })
       socket.on('delete_profile', async function(id) {

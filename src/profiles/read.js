@@ -1,13 +1,16 @@
 const ObjectId = require('mongodb').ObjectID
 
-async function read(collections, { profileId, nickname }) {
+async function read(collections, accountData/*{ profileId, nickname }*/) {
   let code = null
   try {
-    if (!profileId && !nickname) {
+    const { profileId } = accountData
+    if (!accountData.profileId && !accountData.nickname) {
       throw new Error('no prfileID and nickname')
     }
     const res = await collections.profiles.findOne(
-      profileId ? { _id: ObjectId(profileId) } : { nickname }
+      profileId
+      ? { _id: ObjectId(profileId) }
+      : { nickname: accountData.nickname }
     )
     if (res === null) {
       code = 404
