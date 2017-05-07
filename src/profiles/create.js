@@ -1,24 +1,30 @@
 const { saltHashPassword } = require('../helpers')
+const read = require('./read.js')
 
 async function create(collections, profile) {
   const defaultProfile = {
     firstName: 'UnknowFirstName',
     middleName: 'UnknowMiddleName',
     lastName: 'UnknowLastName',
-    nickName: 'nickname',
-    password: '',
     country: null
   }
   const {
     firstName,
     middleName,
-    nickName,
+    nickname,
     lastName,
     password,
     country
   } = Object.assign(defaultProfile, profile)
-  const passwordData = password ? saltHashPassword(password) : null
   try {
+    if (!password || !nickname) {
+      throw new Error('Password and nickname are required')
+    }
+    const response = await read(collections, { nickname })
+    if (response.data) {
+      throw new Error(`User with nickname: ${nickname} is already exist`)
+    }
+    const passwordData = password ? saltHashPassword(password) : null
     const res = await collections.profiles.insertOne({
       name: {
         firstName,
@@ -27,7 +33,7 @@ async function create(collections, profile) {
       },
       passwordData,
       country,
-      nickName
+      nickname
     })
     if (res.result.ok === 1 && res.result.n === 1) {
       console.log(`Profile with id: ${res.insertedId} was created`)

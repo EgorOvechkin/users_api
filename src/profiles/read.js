@@ -1,11 +1,17 @@
 const ObjectId = require('mongodb').ObjectID
 
-async function read(collections, profileId) {
+async function read(collections, { profileId, nickname }) {
+  let code = null
   try {
+    console.log(nickname)
+    if (!profileId && !nickname) {
+      throw new Error('no prfileID and nickname')
+    }
     const res = await collections.profiles.findOne(
-      { _id: ObjectId(profileId) }
+      profileId ? { _id: ObjectId(profileId) } : { nickname }
     )
     if (res === null) {
+      code = 404
       throw new Error('Not found')
     }
     const {
@@ -22,7 +28,7 @@ async function read(collections, profileId) {
   } catch (err) {
     console.log(new Error(err))
     return {
-      code: 500,
+      code: code || 500,
       message: err.message
     }
   }

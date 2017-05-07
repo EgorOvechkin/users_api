@@ -18,7 +18,7 @@ async function update(collections, profileId, update) {
       { _id: ObjectId(profileId) },
       { $set: filterUpdateOptions(update) }
     )
-    console.log(res)
+    // console.log(res)
     if (res.result.ok === 1 && res.result.nModified === 1 && res.result.n === 1) {
       console.log(`Profile with id: ${profileId} was updated`)
       return {
@@ -30,7 +30,6 @@ async function update(collections, profileId, update) {
       throw new Error('Not updated')
     }
     throw new Error('Not found')
-    // console.log(res)
   } catch (err) {
     console.log(new Error(err))
     return {
