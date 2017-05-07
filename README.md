@@ -6,4 +6,4 @@ for start run:
   npm i
   npm start
 ```
-for handle test use # index.html
+for handle test use **index.html**
