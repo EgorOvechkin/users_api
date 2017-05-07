@@ -31,12 +31,8 @@ async function init() {
         const response = await deleteProfile(id)
         socket.emit('response', response)
       })
-      socket.on('update_profile', async function({ id, update }) {
-        const response = await updateProfile(id, update)
-        socket.emit('response', response)
-      })
-      socket.on('update_profile', async function({ id, update }) {
-        const response = await updateProfile(id, update)
+      socket.on('update_profile', async function({ account, update }) {
+        const response = await updateProfile(account, update)
         socket.emit('response', response)
       })
       socket.on('auth', async function({ nickname, password }) {

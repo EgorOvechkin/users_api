@@ -25,10 +25,15 @@
       socket.emit(
         'update_profile',
         {
-          id: getValue('profileId'),
+          account: {
+            nickname: getValue('nickname'),
+            password: getValue('password'),
+          },
           update: {
             firstName: getValue('firstname'),
             country: getValue('country'),
+            nickname: getValue('newNickname'),
+            password: getValue('newPassword'),
             passwordData: {}
           }
         }
@@ -72,6 +77,9 @@
     <input id="password" type="password" placeholder="Password" />
     <br />
     <input id="profileId" placeholder="ID" />
+    <br />
+    <input id="newNickname" placeholder="New nickname" />
+    <input id="newPassword" type="password" placeholder="New password" />
   </div>
   <div>
     <button onclick="createUser()">Create user</button>

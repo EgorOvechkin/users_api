@@ -1,10 +1,14 @@
 const ObjectId = require('mongodb').ObjectID
+const auth = require('../auth.js')
+const { saltHashPassword } = require('../helpers')
 
 function filterUpdateOptions(update) {
   const filteredUpdate = {}
   for (let key in update) {
     if ([ 'firstName', 'middleName', 'lastName' ].some(item => item === key)) {
       filteredUpdate[`name.${key}`] = update[key]
+    } else if (key === 'password') {
+      filteredUpdate.passwordData = saltHashPassword(update.password)
     } else if (key != 'passwordData') {
       filteredUpdate[key] = update[key]
     }
@@ -12,15 +16,21 @@ function filterUpdateOptions(update) {
   return filteredUpdate
 }
 
-async function update(collections, profileId, update) {
+async function update(collections, account, update) {
   try {
+    if (!account) throw new Error('Account is required')
+    const authResult = await auth(collections, account)
+    if (authResult.code !== 200) {
+      return {
+        authResult
+      }
+    }
     const res = await collections.profiles.updateOne(
-      { _id: ObjectId(profileId) },
+      { nickname: account.nickname },
       { $set: filterUpdateOptions(update) }
     )
-    // console.log(res)
     if (res.result.ok === 1 && res.result.nModified === 1 && res.result.n === 1) {
-      console.log(`Profile with id: ${profileId} was updated`)
+      console.log(`Profile with id: was updated`)
       return {
         code: 200,
         message: 'OK'

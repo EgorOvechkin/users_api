@@ -2,9 +2,10 @@ const ObjectId = require('mongodb').ObjectID
 const { read } = require('./profiles')
 const { genHashPassword } = require('./helpers')
 
-async function auth(collections, { nickname, password }) {
+async function auth(collections, { nickname = '', password = '' }) {
   let code = null
   try {
+    if (!nickname) throw new Error('Nickname is required')
     const profile = await collections.profiles.findOne({ nickname })
     if (!profile) {
       code = 404
@@ -12,6 +13,7 @@ async function auth(collections, { nickname, password }) {
     }
     const { passwordHash, salt } = profile.passwordData
     if (passwordHash == genHashPassword(password, salt).passwordHash) {
+      console.log('Auth is success')
       return {
         code: 200,
         message: 'OK'
