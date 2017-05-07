@@ -1,6 +1,6 @@
 # users_api
 
-Before start create **.env** in project root directory file and insert there yours mongodb host, name and base name. See **.env.sample**
+Before start create **.env** file in project root directory and insert there yours mongodb host, name and base name. See **.env.sample**
 
 for start run:
 
