@@ -20,7 +20,7 @@
   "homepage": "https://github.com/EgorOvechkin/profile_api#readme",
   "dependencies": {
     "dotenv": "^4.0.0",
-    "mongodb": "^2.2.26",
+    "mongodb": "^3.6.1",
     "socket.io": "^1.7.3"
   },
   "devDependencies": {
